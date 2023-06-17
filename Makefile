@@ -30,6 +30,9 @@ help:
 day1: utils.ml day1.ml
 	$(OC) -o $@ $^
 
+day2: utils.ml day2.ml
+	$(OC) -o $@ $^
+
 #<--
 
 %.ml: rep = $(patsubst %.ml,%,$@): utils.ml $(patsubst %.ml,%,$@).ml\n\t$$(OC) -o $$@ $$^\n\n\#<--
