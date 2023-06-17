@@ -13,7 +13,7 @@ $ ./dayX part:1 file:filename
 
 # Clean up the files produced by the Ocaml compiler:
 $ make clean
-`
+```
 
 # For development
 Run the following to create a new dayX.ml file and update the makefile.
