@@ -1,7 +1,7 @@
 # aoc2022
 Solutions for Advent of Code 2022
 
-Written in Ocaml.
+Written in OCaml.
 
 # Steps
 ```bash

@@ -29,7 +29,7 @@ let split_at (ls: 'a list) (at: int) : ('a list * 'a list) option =
             first_elements := (List.nth ls i) :: !first_elements
           done;
 
-          for i = at to list_size do
+          for i = at + 1 to list_size - 1 do
             last_elements := (List.nth ls i) :: !last_elements
           done;
 
@@ -67,7 +67,7 @@ let split_by (split_test: int -> 'a -> bool) (ls: 'a list): 'a list list =
   let start = ref 0 in
     for i = 0 to List.length ls - 1 do
       if split_test i (List.nth ls i) then
-        let n = i - !start - 1 in
+        let n = i - !start in
         let filtered = take_from !start n ls in
           if List.length filtered > 0 then begin
             result := filtered :: !result;
