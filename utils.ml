@@ -36,26 +36,26 @@ let split_at (ls: 'a list) (at: int) : ('a list * 'a list) option =
           Some (!first_elements, !last_elements)
 ;;
 
-let take (n: int) (ls: 'a list) : 'a list =
-  let list_size = List.length ls in
-    if n > list_size || n < 0 then
-      []
-    else
-      let first_elements = ref [] in
-        for i = 0 to n do
-          first_elements := (List.nth ls i) :: !first_elements
-        done;
-
-        !first_elements
+let rec take (n: int) (ls: 'a list) : 'a list =
+  if n <= 0 then
+    []
+  else if n >= (List.length ls) then
+    ls
+  else
+    match ls with
+    | [] -> []
+    | head :: tail -> head :: (take (n - 1) tail)
 ;;
+
 
 let take_from (start: int) (n: int) (ls: 'a list) : 'a list =
   let list_size = List.length ls in
-    if start + n > list_size - 1 || start < 0 then
+  let end_idx = min (start + n - 1) (list_size - 1) in
+    if n < 0 || start < 0 || end_idx < 0 then
       []
     else
       let first_elements = ref [] in
-        for i = start to start + n do
+        for i = start to end_idx do
           first_elements := (List.nth ls i) :: !first_elements
         done;
 
@@ -67,7 +67,7 @@ let split_by (split_test: int -> 'a -> bool) (ls: 'a list): 'a list list =
   let start = ref 0 in
     for i = 0 to List.length ls - 1 do
       if split_test i (List.nth ls i) then
-        let n = i - !start in
+        let n = i - !start + 1 in
         let filtered = take_from !start n ls in
           if List.length filtered > 0 then begin
             result := filtered :: !result;
@@ -76,13 +76,20 @@ let split_by (split_test: int -> 'a -> bool) (ls: 'a list): 'a list list =
     done;
 
     if List.length ls > !start then begin
-      let n =  List.length ls - !start - 1 in
+      let n =  List.length ls - !start in
       let filtered = take_from !start n ls in
         if List.length filtered > 0 then
           result := filtered :: !result;
     end;
 
     List.rev !result
+;;
+
+let rec remove_last (ls: 'a list): 'a list =
+  match ls with
+  | [] -> []
+  | [a] -> []
+  | head :: tail -> head :: (remove_last tail)
 ;;
 
 let list_to_string (item_to_string: 'a -> string) (ls: 'a list): string =
