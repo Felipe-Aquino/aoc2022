@@ -92,6 +92,8 @@ let rec remove_last (ls: 'a list): 'a list =
   | head :: tail -> head :: (remove_last tail)
 ;;
 
+let string_to_char_list s = List.init (String.length s) (String.get s);;
+
 let list_to_string (item_to_string: 'a -> string) (ls: 'a list): string =
   let formater (i: int) (value: 'a) : string =
     if i + 1 == List.length ls then
