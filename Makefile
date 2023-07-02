@@ -2,22 +2,26 @@ all: help
 
 OC=ocamlopt
 
-content := let part1 filename = ();;\n
+content := open Utils\n
 content += \n
-content += let part2 filename = ();;\n
+content += let part1 filename = ()\n
 content += \n
-content += let raw_args = Utils.Args.read () in\n
-content += let parsed = Utils.Args.parse raw_args in\n
-content += let filename =\n
-content += \tmatch parsed.file with\n
-content += \t| None -> \"./inputs/example.txt\"\n
-content += \t| Some name -> name\n
-content += in\n
-content += \tif parsed.part == 1 then\n
-content += \t\tpart1 filename\n
-content += \telse if parsed.part == 2 then\n
-content += \t\tpart2 filename\n
-content += ;;\n
+content += let part2 filename = ()\n
+content += \n
+content += (* Calling the solutions *)\n
+content += \n
+content += let () =\n
+content += \tlet raw_args = Args.read () in\n
+content += \tlet parsed = Args.parse raw_args in\n
+content += \tlet filename =\n
+content += \t\tmatch parsed.file with\n
+content += \t\t| None -> \"./inputs/example.txt\"\n
+content += \t\t| Some name -> name\n
+content += \tin\n
+content += \t\tif parsed.part == 1 then\n
+content += \t\t\tpart1 filename\n
+content += \t\telse if parsed.part == 2 then\n
+content += \t\t\tpart2 filename\n
 
 help:
 	@echo "";

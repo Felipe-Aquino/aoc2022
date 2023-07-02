@@ -137,20 +137,19 @@ let part2 filename =
     Printf.printf "\nresult: %s\n" (
       Array.fold_left (fun result stack -> result ^ (String.make 1 (top stack))) "" stacks
     )
-;;
 
 (* Calling the solutions *)
 
-let raw_args = Args.read () in
-let parsed = Args.parse raw_args in
-let filename =
-  match parsed.file with
-  | None -> "./inputs/day5-example.txt"
-  | Some name -> name
-in
-  if parsed.part == 1 then
-    part1 filename
-  else if parsed.part == 2 then
-    part2 filename
-;;
+let () =
+  let raw_args = Args.read () in
+  let parsed = Args.parse raw_args in
+  let filename =
+    match parsed.file with
+    | None -> "./inputs/day5-example.txt"
+    | Some name -> name
+  in
+    if parsed.part == 1 then
+      part1 filename
+    else if parsed.part == 2 then
+      part2 filename
 

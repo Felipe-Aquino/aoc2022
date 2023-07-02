@@ -47,17 +47,17 @@ let part2 filename =
 
       let result = get_marker_start chars 14 in Printf.printf "result: %d\n" result
     ) lines
-;;
 
-let raw_args = Args.read () in
-let parsed = Args.parse raw_args in
-let filename =
-  match parsed.file with
-  | None -> "./inputs/day6-example.txt"
-  | Some name -> name
-in
-  if parsed.part == 1 then
-    part1 filename
-  else if parsed.part == 2 then
-    part2 filename
-;;
+let () =
+  let raw_args = Args.read () in
+  let parsed = Args.parse raw_args in
+  let filename =
+    match parsed.file with
+    | None -> "./inputs/day6-example.txt"
+    | Some name -> name
+  in
+    if parsed.part == 1 then
+      part1 filename
+    else if parsed.part == 2 then
+      part2 filename
+

@@ -3,12 +3,10 @@ open Utils
 let to_digit (c: char): int =
   let code = Char.code c in
     code - 0x30
-;;
 
 let is_digit (c: char): bool =
   let code = Char.code c in
     0x30 <= code && code <= 0x39
-;;
 
 let read_digit (s: string) (idx: int): int option =
   let chr = String.get s idx in
@@ -16,11 +14,9 @@ let read_digit (s: string) (idx: int): int option =
       Some (to_digit chr)
     else
       None
-;;
 
 let digit_list_to_num (digits: int list): int = 
   List.fold_left (fun acc value -> 10 * acc + value) 0 digits
-;;
 
 let read_number (s: string) (idx: int): (int * int) option =
   (* iidx = internal index *)
@@ -39,16 +35,14 @@ let read_number (s: string) (idx: int): (int * int) option =
         Some (next_idx, digit_list_to_num digits)
       else
         None
-;;
 
 let read_char (s: string) (idx: int): (int * char) option =
     if String.length s > idx then
       Some (idx + 1, String.get s idx)
     else
       None
-;;
 
-exception ReadError of string;;
+exception ReadError of string
 
 let expect_number (s: string) (idx: int) (line: int): (int * int) =
   match read_number s idx with
@@ -56,7 +50,6 @@ let expect_number (s: string) (idx: int) (line: int): (int * int) =
       ReadError (Printf.sprintf "%d: could not read number in '%s' at pos %d" line s idx)
     )
   | Some result -> result
-;;
 
 let expect_char (expect: char) (s: string) (idx: int) (line: int): int =
   match read_char s idx with
@@ -70,30 +63,26 @@ let expect_char (expect: char) (s: string) (idx: int) (line: int): int =
       )
     else
       next
-;;
 
-let expect_comma = expect_char ',';;
-let expect_dash = expect_char '-';;
+let expect_comma = expect_char ','
+let expect_dash = expect_char '-'
 
 type range_t =
   { first: int
   ; last: int
-  };;
+  }
 
-let new_range (f: int) (l: int): range_t = { first = f; last = l };;
+let new_range (f: int) (l: int): range_t = { first = f; last = l }
 let print_range (r: range_t): unit =
   Printf.printf "range(%d..%d) " r.first r.last
-;;
 
 (* Test if range1 fully contains range2 *)
 let range_fully_contains (range1: range_t) (range2: range_t): bool =
   range1.first <= range2.first && range2.last <= range1.last
-;;
 
 (* Test if range1 partially contains range2 *)
 let range_partially_contains (range1: range_t) (range2: range_t): bool =
   not (range2.first > range1.last || range1.first > range2.last)
-;;
 
 let parse_and_test_contained (input: string) (line: int): bool =
   let (pos, first) = expect_number input 0 line in
@@ -120,7 +109,6 @@ let parse_and_test_contained (input: string) (line: int): bool =
       Printf.printf "\n"
     end;
   ok
-;;
 
 let part1 filename =
   let lines = read_file_lines filename in
@@ -136,7 +124,6 @@ let part1 filename =
   in
   let contained_count = List.fold_left test_and_sum 0 lines in
     Printf.printf "fully contained count: %d\n" contained_count
-;;
 
 let parse_and_test_contained2 (input: string) (line: int): bool =
   let (pos, first) = expect_number input 0 line in
@@ -160,7 +147,6 @@ let parse_and_test_contained2 (input: string) (line: int): bool =
       Printf.printf "\n"
     end;
     ok
-;;
 
 let part2 filename =
   let lines = read_file_lines filename in
@@ -176,20 +162,19 @@ let part2 filename =
   in
   let contained_count = List.fold_left test_and_sum 0 lines in
     Printf.printf "partially contained count: %d\n" contained_count
-;;
 
 (* Calling the solutions *)
 
-let raw_args = Utils.Args.read () in
-let parsed = Utils.Args.parse raw_args in
-let filename =
-  match parsed.file with
-  | None -> "./inputs/day4-example.txt"
-  | Some name -> name
-in
-  if parsed.part == 1 then
-    part1 filename
-  else if parsed.part == 2 then
-    part2 filename
-;;
+let () =
+  let raw_args = Args.read () in
+  let parsed = Args.parse raw_args in
+  let filename =
+    match parsed.file with
+    | None -> "./inputs/day4-example.txt"
+    | Some name -> name
+  in
+    if parsed.part == 1 then
+      part1 filename
+    else if parsed.part == 2 then
+      part2 filename
 

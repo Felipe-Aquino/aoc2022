@@ -1,8 +1,9 @@
+open Utils
+
 type shape =
   | Rock
   | Paper
   | Scissors
-;;
 
 let char_to_shape (c: char): shape =
   match c with
@@ -10,21 +11,18 @@ let char_to_shape (c: char): shape =
   | 'B' | 'Y' -> Paper
   | 'C' | 'Z' -> Scissors
   | _ -> Rock
-;;
 
 let shape_to_str (s: shape): string =
   match s with
   | Rock -> "Rock"
   | Paper -> "Paper"
   | Scissors -> "Scissors"
-;;
 
 let shape_score (s: shape): int =
   match s with
   | Rock -> 1
   | Paper -> 2
   | Scissors -> 3
-;;
 
 (* s2 is the shape I selected *)
 let round_outcome (s1: shape) (s2: shape): int =
@@ -36,20 +34,16 @@ let round_outcome (s1: shape) (s2: shape): int =
   | (Rock, Scissors) -> 0
   | (Scissors, Rock) -> 6
   | _ -> 3
-;;
 
 let round_to_str (round: shape * shape): string =
   match round with
   | (s1, s2) -> Printf.sprintf "(%s, %s)" (shape_to_str s1) (shape_to_str s2)
-;;
 
 let calculate_score (rounds: (shape * shape) list): int =
   (* s2 is the shape I selected *)
   let calc total (s1, s2) = total + (shape_score s2) + (round_outcome s1 s2) in
     List.fold_left calc 0 rounds
-;;
 
-open Utils
 let part1 filename =
   let lines = read_file_lines filename in
   let read_round line =
@@ -58,7 +52,6 @@ let part1 filename =
   let rounds = List.map read_round lines in
     print_endline (list_to_string round_to_str rounds);
     Printf.printf "\ntotal score: %d\n" (calculate_score rounds)
-;;
 
 let shape_from_condition (prev: shape) (cond: char): shape =
   if cond == 'X' then
@@ -76,9 +69,7 @@ let shape_from_condition (prev: shape) (cond: char): shape =
     | Rock -> Paper
     | Paper -> Scissors
     | Scissors -> Rock
-;;
 
-open Utils
 let part2 filename =
   let lines = read_file_lines filename in
   let read_round line =
@@ -88,20 +79,18 @@ let part2 filename =
   in
   let rounds = List.map read_round lines in
     Printf.printf "total score: %d\n" (calculate_score rounds)
-;;
 
 (* Calling the solutions *)
 
-let raw_args = Utils.Args.read () in
-let parsed = Utils.Args.parse raw_args in
-let filename =
-  match parsed.file with
-  | None -> "./inputs/day2-example.txt"
-  | Some name -> name
-in
-  if parsed.part == 1 then
-    part1 filename
-  else if parsed.part == 2 then
-    part2 filename
-;;
-
+let () =
+  let raw_args = Args.read () in
+  let parsed = Args.parse raw_args in
+  let filename =
+    match parsed.file with
+    | None -> "./inputs/day2-example.txt"
+    | Some name -> name
+  in
+    if parsed.part == 1 then
+      part1 filename
+    else if parsed.part == 2 then
+      part2 filename

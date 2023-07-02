@@ -1,3 +1,5 @@
+open Utils
+
 let rec group_lines (ls: string list): string list list =
   let rec loop (l: string list): (string list * string list list) =
     match l with
@@ -14,16 +16,12 @@ let rec group_lines (ls: string list): string list list =
         result
       else
         curr :: result
-;;
 
 open Utils
 let print_calories_by_elf calories =
   let result =
     list_to_string _id (List.map (fun l -> list_to_string _id l) calories) in
       Printf.printf "%s\n\n" result
-;;
-
-let max a b = if a > b then a else b;;
 
 let part1 filename =
   let lines = read_file_lines filename in
@@ -36,7 +34,6 @@ let part1 filename =
 
     let max_total_calories = List.fold_left max 0 calories_totals in
       Printf.printf "max total calories: %d\n" max_total_calories 
-;;
 
 (* Array sorted from high to low *)
 let insert_ord (arr: int array) (value: int) = 
@@ -58,7 +55,6 @@ let insert_ord (arr: int array) (value: int) =
       notQuit := !notQuit && (!i < 2);
       i := !i + 1
     done
-;;
 
 let part2 filename = 
   let lines = read_file_lines filename in
@@ -75,19 +71,18 @@ let part2 filename =
   let sum_ints acc value = acc + value in
   let max_total_calories = Array.fold_left sum_ints 0 highest_calories in
       Printf.printf "max total calories: %d\n" max_total_calories 
-;;
 
 (* Calling the solutions *)
 
-let raw_args = Utils.Args.read () in
-let parsed = Utils.Args.parse raw_args in
-let filename =
-  match parsed.file with
-  | None -> "./inputs/day1-example.txt"
-  | Some name -> name
-in
-  if parsed.part == 1 then
-    part1 filename
-  else if parsed.part == 2 then
-    part2 filename
-;;
+let () =
+  let raw_args = Args.read () in
+  let parsed = Args.parse raw_args in
+  let filename =
+    match parsed.file with
+    | None -> "./inputs/day1-example.txt"
+    | Some name -> name
+  in
+    if parsed.part == 1 then
+      part1 filename
+    else if parsed.part == 2 then
+      part2 filename

@@ -4,19 +4,15 @@ let read_file_lines (file_name: string) : string list =
     try
       while true; do
         let line = input_line ic in
-          lines := line :: !lines;
-          (* print_endline line;
-          flush stdout *)
+          lines := line :: !lines
       done;
       !lines
     with e ->
       close_in ic;
       List.rev !lines
-;;
 
 let concats (ls: string list) : string =
   List.fold_left (fun acc item -> acc ^ item) "" ls
-;;
 
 let split_at (ls: 'a list) (at: int) : ('a list * 'a list) option =
   let list_size = List.length ls in
@@ -34,7 +30,6 @@ let split_at (ls: 'a list) (at: int) : ('a list * 'a list) option =
           done;
 
           Some (!first_elements, !last_elements)
-;;
 
 let rec take (n: int) (ls: 'a list) : 'a list =
   if n <= 0 then
@@ -45,7 +40,6 @@ let rec take (n: int) (ls: 'a list) : 'a list =
     match ls with
     | [] -> []
     | head :: tail -> head :: (take (n - 1) tail)
-;;
 
 let rec take_while (f: 'a -> bool) (ls: 'a list) : 'a list =
   match ls with
@@ -55,7 +49,6 @@ let rec take_while (f: 'a -> bool) (ls: 'a list) : 'a list =
       head :: (take_while f tail)
     else
       []
-;;
 
 let rec take_while2 (f: 'a -> bool) (ls: 'a list) : 'a list * 'a list =
   match ls with
@@ -66,7 +59,6 @@ let rec take_while2 (f: 'a -> bool) (ls: 'a list) : 'a list * 'a list =
       | (ls', tl) -> (head :: ls', tl)
     else
       ([], ls)
-;;
 
 let take_from (start: int) (n: int) (ls: 'a list) : 'a list =
   let list_size = List.length ls in
@@ -80,7 +72,6 @@ let take_from (start: int) (n: int) (ls: 'a list) : 'a list =
         done;
 
         List.rev !first_elements
-;;
 
 let split_by (split_test: int -> 'a -> bool) (ls: 'a list): 'a list list =
   let result = ref [] in
@@ -103,39 +94,33 @@ let split_by (split_test: int -> 'a -> bool) (ls: 'a list): 'a list list =
     end;
 
     List.rev !result
-;;
 
 let rec remove_last (ls: 'a list): 'a list =
   match ls with
   | [] -> []
   | [a] -> []
   | head :: tail -> head :: (remove_last tail)
-;;
 
 let replace (ls: 'a list) (pos: int) (value: 'a): 'a list =
   List.mapi (fun i x -> if pos == i then value else x) ls
-;;
 
 (* Abstract stuff begin *)
 let enumerate (ls: 'a list): (int * 'a) list =
   let indexes_of ls' = List.init (List.length ls') (fun i -> i) in
     List.combine (indexes_of ls) ls
-;;
 
-let packing (f: 'a -> 'b) (g: 'c -> 'a): ('c -> 'b) = fun v -> f (g v);;
+let packing (f: 'a -> 'b) (g: 'c -> 'a): ('c -> 'b) = fun v -> f (g v)
 
 (* generates a function that accepts a tuple *)
 let tuple_packing (f: 'a -> 'b): ('c * 'a -> 'b) =
   packing f (fun (k, v) -> v)
-;;
 
 let tuple_packing_r (f: 'a -> 'b): ('a * 'c -> 'b) =
   packing f (fun (v, k) -> v)
-;;
 
 (* Abstract stuff end *)
 
-let string_to_char_list s = List.init (String.length s) (String.get s);;
+let string_to_char_list s = List.init (String.length s) (String.get s)
 
 let list_to_string (item_to_string: 'a -> string) (ls: 'a list): string =
   let formater (i: int) (value: 'a) : string =
@@ -145,16 +130,14 @@ let list_to_string (item_to_string: 'a -> string) (ls: 'a list): string =
       (item_to_string value) ^ ", "
   in
     "[" ^ (concats (List.mapi formater ls)) ^ "]"
-;;
 
-let _id (value: 'a): 'a = value;;
+let _id (value: 'a): 'a = value
 
 exception ArgumentError of string;;
 
 let append_arg args i v =
   if i >= 0 then
     args := v :: !args
-;;
 
 module Args = struct
   type t =
@@ -194,4 +177,4 @@ module Args = struct
     | None -> Printf.printf "(none) }\n"
     | Some name -> Printf.printf "'%s' }\n" name;
 
-end;;
+end

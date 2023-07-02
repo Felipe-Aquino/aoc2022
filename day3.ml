@@ -8,15 +8,13 @@ let string_to_priority_list (s: string): int list =
       (Char.code c - 0x41 + 27) :: l
   in
     List.rev (String.fold_left char_to_priority [] s)
-;;
 
-module SI = Set.Make(Int);;
+module SI = Set.Make(Int)
 
 let intersection ((l1, l2): int list * int list): int list =
   let set1 = SI.of_list l1 in
   let set2 = SI.of_list l2 in
     SI.elements (SI.inter set1 set2)
-;;
 
 let part1 filename =
   let lines = read_file_lines filename in
@@ -35,7 +33,6 @@ let part1 filename =
   let sum acc value = acc + value in
   let sum_of_priorities = List.fold_left sum 0 shared_items in
     Printf.printf "sum of priorities: %d\n" sum_of_priorities
-;;
 
 let intersection_list3 (ls: int list list): int list =
   let size = List.length ls in
@@ -50,7 +47,6 @@ let intersection_list3 (ls: int list list): int list =
       let set2 = SI.of_list (List.nth ls 1) in
       let set3 = SI.of_list (List.nth ls 2) in
         SI.elements (SI.inter (SI.inter set1 set2) set3)
-;;
 
 let part2 filename =
   let lines = read_file_lines filename in
@@ -66,20 +62,19 @@ let part2 filename =
   let sum acc value = acc + value in
   let sum_of_priorities = List.fold_left sum 0 (List.flatten common_items) in
     Printf.printf "\nsum of priorities: %d\n" sum_of_priorities
-;;
 
 (* Calling the solutions *)
 
-let raw_args = Args.read () in
-let parsed = Args.parse raw_args in
-let filename =
-  match parsed.file with
-  | None -> "./inputs/day3-example.txt"
-  | Some name -> name
-in
-  if parsed.part == 1 then
-    part1 filename
-  else if parsed.part == 2 then
-    part2 filename
-;;
+let () =
+  let raw_args = Args.read () in
+  let parsed = Args.parse raw_args in
+  let filename =
+    match parsed.file with
+    | None -> "./inputs/day3-example.txt"
+    | Some name -> name
+  in
+    if parsed.part == 1 then
+      part1 filename
+    else if parsed.part == 2 then
+      part2 filename
 
