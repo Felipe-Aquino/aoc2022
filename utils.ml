@@ -47,6 +47,26 @@ let rec take (n: int) (ls: 'a list) : 'a list =
     | head :: tail -> head :: (take (n - 1) tail)
 ;;
 
+let rec take_while (f: 'a -> bool) (ls: 'a list) : 'a list =
+  match ls with
+  | [] -> []
+  | head :: tail ->
+    if f head then
+      head :: (take_while f tail)
+    else
+      []
+;;
+
+let rec take_while2 (f: 'a -> bool) (ls: 'a list) : 'a list * 'a list =
+  match ls with
+  | [] -> ([], [])
+  | head :: tail ->
+    if f head then
+      match take_while2 f tail with
+      | (ls', tl) -> (head :: ls', tl)
+    else
+      ([], ls)
+;;
 
 let take_from (start: int) (n: int) (ls: 'a list) : 'a list =
   let list_size = List.length ls in
@@ -91,6 +111,29 @@ let rec remove_last (ls: 'a list): 'a list =
   | [a] -> []
   | head :: tail -> head :: (remove_last tail)
 ;;
+
+let replace (ls: 'a list) (pos: int) (value: 'a): 'a list =
+  List.mapi (fun i x -> if pos == i then value else x) ls
+;;
+
+(* Abstract stuff begin *)
+let enumerate (ls: 'a list): (int * 'a) list =
+  let indexes_of ls' = List.init (List.length ls') (fun i -> i) in
+    List.combine (indexes_of ls) ls
+;;
+
+let packing (f: 'a -> 'b) (g: 'c -> 'a): ('c -> 'b) = fun v -> f (g v);;
+
+(* generates a function that accepts a tuple *)
+let tuple_packing (f: 'a -> 'b): ('c * 'a -> 'b) =
+  packing f (fun (k, v) -> v)
+;;
+
+let tuple_packing_r (f: 'a -> 'b): ('a * 'c -> 'b) =
+  packing f (fun (v, k) -> v)
+;;
+
+(* Abstract stuff end *)
 
 let string_to_char_list s = List.init (String.length s) (String.get s);;
 
