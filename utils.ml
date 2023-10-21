@@ -131,6 +131,43 @@ let list_to_string (item_to_string: 'a -> string) (ls: 'a list): string =
   in
     "[" ^ (concats (List.mapi formater ls)) ^ "]"
 
+(* check if prefix is substring beging at a position *)
+let string_starts_with_from (prefix: string) (from: int) (str: string): bool =
+  let prefix_len = String.length prefix in
+  let str_len = String.length str in
+
+  let rec loop idx =
+    if idx == prefix_len then
+      true
+    else if idx >= prefix_len || (from + idx) >= str_len then
+      false
+    else if String.get str (from + idx) == String.get prefix idx then
+      loop (idx + 1)
+    else
+      false
+  in
+    loop 0
+
+(* split a string with another string as the separator *)
+let string_split_on_string (sep: string) (str: string): string list =
+  let sep_len = String.length sep in
+  let str_len = String.length str in
+
+  let rec loop start_idx current_idx result =
+    if current_idx + sep_len > str_len then
+      if start_idx <= str_len then
+        let value = String.sub str start_idx (str_len - start_idx) in
+          List.rev (value :: result)
+      else
+          List.rev result
+    else if string_starts_with_from sep current_idx str then
+      let value = (String.sub str start_idx (current_idx - start_idx)) in
+        loop (current_idx + sep_len) (current_idx + sep_len) (value :: result)
+    else
+      loop start_idx (current_idx + 1) result
+  in
+    loop 0 0 []
+
 let _id (value: 'a): 'a = value
 
 exception ArgumentError of string;;
