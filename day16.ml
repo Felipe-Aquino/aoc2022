@@ -126,21 +126,6 @@ let build_distances_matrix (valves: valve_t array): int array array =
 
   distances
 
-let state_print_current_valve (state: state_t) =
-  Printf.printf
-    "(%s, %d, %d)\n"
-    state.valves.(state.first_valve).name
-    state.time_remaining
-    state.total_flow
-
-
-let print_flows flows =
-  List.iter
-    (fun (flow, dist, j) -> Printf.printf " (%d, %d, %d)" flow dist j)
-    flows;
-  Printf.printf "\n"
-
-
 type path_t =
   { remaining: int
   ; total_flow: int
