@@ -15,7 +15,7 @@ content += \tlet raw_args = Args.read () in\n
 content += \tlet parsed = Args.parse raw_args in\n
 content += \tlet filename =\n
 content += \t\tmatch parsed.file with\n
-content += \t\t| None -> \"./inputs/example.txt\"\n
+content += \t\t| None -> \"./inputs/dayX-example.txt\"\n
 content += \t\t| Some name -> name\n
 content += \tin\n
 content += \t\tif parsed.part == 1 then\n
@@ -82,13 +82,19 @@ day16: utils.ml day16.ml
 day17: utils.ml day17.ml
 	$(OC) -o $@ $^
 
+day18: utils.ml day18.ml
+	$(OC) -o $@ $^
+
 #<--
 
-%.ml: rep = $(patsubst %.ml,%,$@): utils.ml $(patsubst %.ml,%,$@).ml\n\t$$(OC) -o $$@ $$^\n\n\#<--
+%.ml: name = $(patsubst %.ml,%,$@)
+%.ml: rep = $(name): utils.ml $(name).ml\n\t$$(OC) -o $$@ $$^\n\n\#<--
 
 %.ml:
 	@sed -i 's/^#<--/${rep}/' Makefile
-	@echo "$(content)" | sed 's/^ //g;s/\t/  /g' - >> $@
+	@echo "$(content)" | sed 's/dayX-/$(name)-/g;s/^ //g;s/\t/  /g' - >> $@
+	@touch ./inputs/$(name).txt
+	@touch ./inputs/$(name)-example.txt
 
 clean:
 	rm *.o *.cmx *.cmi
