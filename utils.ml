@@ -31,15 +31,16 @@ let split_at (ls: 'a list) (at: int) : ('a list * 'a list) option =
 
           Some (!first_elements, !last_elements)
 
-let rec take (n: int) (ls: 'a list) : 'a list =
-  if n <= 0 then
-    []
-  else if n >= (List.length ls) then
-    ls
-  else
-    match ls with
-    | [] -> []
-    | head :: tail -> head :: (take (n - 1) tail)
+let take (n: int) (ls: 'a list) : 'a list =
+  let rec loop count l result =
+    if count <= 0 then
+      result
+    else
+      match l with
+      | [] -> result
+      | head :: tail -> loop (count - 1) tail (head :: result)
+  in
+    List.rev (loop n ls [])
 
 let rec take_while (f: 'a -> bool) (ls: 'a list) : 'a list =
   match ls with
