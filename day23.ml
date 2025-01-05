@@ -113,6 +113,7 @@ let process_round (grid: int array array) (elves: elf_t array): int =
           )
       end
       else (
+        elf.proposed_dir <- None;
         elf.start_dir <- (elf.start_dir + 1) mod 4
       );
       check_moves (idx + 1)
@@ -332,7 +333,7 @@ let read_elves2 (i: int) (line: string) =
 
 let process_until_nobody_moves grid elves =
   let rec loop iters =
-    if iters < 100000 then
+    if iters < 10000 then
     begin
       let move_count = process_round grid elves in
         if move_count > 0 then
@@ -375,9 +376,8 @@ let part2 filename =
     Array.iter (fun elf -> grid.(elf.row).(elf.col) <- elf.id) elves;
 
   let round_count = process_until_nobody_moves grid elves in
-    (* print_grid_with_bounds grid elves; *)
-    Printf.printf "The number of the first round where no Elf moves is %d\n" round_count;
-    Printf.printf "Number of empty ground tile is %d\n" (get_empty_tiles_count elves)
+    (*print_grid_with_bounds grid elves;*)
+    Printf.printf "The number of the first round where no Elf moves is %d\n" round_count
 
 (* Calling the solutions *)
 
