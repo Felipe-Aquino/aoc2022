@@ -100,6 +100,9 @@ day22: utils.ml day22.ml
 day23: utils.ml day23.ml
 	$(OC) -o $@ $^
 
+day24: utils.ml day24.ml
+	$(OC) -o $@ $^
+
 #<--
 
 %.ml: name = $(patsubst %.ml,%,$@)
